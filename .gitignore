@@ -1,0 +1,16 @@
+pnpm-lock.yaml
+yark.lock
+npm.lock
+node_modules
+postgres-data
+.env 
+schema.gql
+build
+dist
+yarn-error.log
+.log
+public
+log
+yarn.lock
+.vscode/*
+*.md
