@@ -28,6 +28,14 @@ import { MemberGroupsModule } from './member-groups/member-groups.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { SearchModule } from './search/search.module';
 import { AuditModule } from './audit/audit.module';
+import { PaymentMethodsModule } from './payment-methods/payment-methods.module';
+import { HouseholdMembersModule } from './household-members/household-members.module';
+import { IncomeStreamsModule } from './income-streams/income-streams.module';
+import { BudgetsModule } from './budgets/budgets.module';
+import { RecurringModule } from './recurring/recurring.module';
+import { AlertsModule } from './alerts/alerts.module';
+import { RemindersModule } from './reminders/reminders.module';
+import { OnboardingModule } from './onboarding/onboarding.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { SanitizePipe } from './common/pipes/sanitize.pipe';
 
@@ -89,6 +97,14 @@ import { SanitizePipe } from './common/pipes/sanitize.pipe';
     NotificationsModule,
     SearchModule,
     AuditModule,
+    PaymentMethodsModule,
+    HouseholdMembersModule,
+    IncomeStreamsModule,
+    BudgetsModule,
+    RecurringModule,
+    AlertsModule,
+    RemindersModule,
+    OnboardingModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: GqlThrottlerGuard },

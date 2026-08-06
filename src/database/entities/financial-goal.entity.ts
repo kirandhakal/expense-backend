@@ -10,7 +10,14 @@ export enum GoalStatus {
   PAUSED = 'paused',
 }
 
+export enum GoalPriority {
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high',
+}
+
 registerEnumType(GoalStatus, { name: 'GoalStatus' });
+registerEnumType(GoalPriority, { name: 'GoalPriority' });
 
 @ObjectType()
 @Entity('financial_goals')
@@ -34,6 +41,10 @@ export class FinancialGoal extends SoftDeleteEntity {
   @Field(() => GoalStatus)
   @Column({ type: 'enum', enum: GoalStatus, default: GoalStatus.ACTIVE })
   status: GoalStatus;
+
+  @Field(() => GoalPriority)
+  @Column({ type: 'enum', enum: GoalPriority, default: GoalPriority.MEDIUM })
+  priority: GoalPriority;
 
   @Field()
   @Column()

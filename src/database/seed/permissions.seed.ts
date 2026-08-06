@@ -14,6 +14,12 @@ export const PERMISSIONS = [
   { name: 'kanban:manage', description: 'Manage kanban tasks', module: 'kanban' },
   { name: 'category:manage', description: 'Manage categories', module: 'category' },
   { name: 'group:manage', description: 'Manage member groups', module: 'group' },
+  { name: 'budget:manage', description: 'Manage budgets', module: 'budget' },
+  { name: 'recurring:manage', description: 'Manage recurring transactions', module: 'recurring' },
+  { name: 'alert:manage', description: 'Manage alert rules', module: 'alert' },
+  { name: 'payment_method:manage', description: 'Manage payment methods', module: 'payment_method' },
+  { name: 'income_stream:manage', description: 'Manage income streams', module: 'income_stream' },
+  { name: 'reminder:manage', description: 'Manage reminder settings', module: 'reminder' },
 ];
 
 export const ROLE_PERMISSIONS: Record<string, string[]> = {
@@ -22,14 +28,21 @@ export const ROLE_PERMISSIONS: Record<string, string[]> = {
     'transaction:create', 'transaction:read', 'transaction:update', 'transaction:delete',
     'member:invite', 'member:read', 'member:update', 'member:remove',
     'workspace:update', 'goal:manage', 'kanban:manage', 'category:manage', 'group:manage',
+    'budget:manage', 'recurring:manage', 'alert:manage', 'payment_method:manage',
+    'income_stream:manage', 'reminder:manage',
   ],
   member: [
     'transaction:create', 'transaction:read', 'transaction:update',
     'member:read', 'goal:manage', 'kanban:manage', 'group:manage',
+    'recurring:manage', 'income_stream:manage',
+  ],
+  viewer: [
+    'transaction:read', 'member:read',
   ],
   child: ['transaction:read', 'member:read', 'kanban:manage'],
 };
 
+/** @deprecated Use HIERARCHICAL_EXPENSE_CATEGORIES from catalogs.seed */
 export const DEFAULT_CATEGORIES = [
   { name: 'Food', slug: 'food', color: '#ef4444', icon: '🍔' },
   { name: 'Bills', slug: 'bills', color: '#f97316', icon: '📄' },

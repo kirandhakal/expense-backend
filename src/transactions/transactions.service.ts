@@ -26,7 +26,7 @@ export class TransactionsService {
 
     return this.transactionRepo.find({
       where,
-      relations: { category: true, member: true },
+      relations: { category: true, member: true, paymentMethod: true },
       order: { date: 'DESC', createdAt: 'DESC' },
     });
   }
@@ -46,7 +46,7 @@ export class TransactionsService {
     await this.transactionRepo.update(id, input);
     return this.transactionRepo.findOneOrFail({
       where: { id },
-      relations: { category: true, member: true },
+      relations: { category: true, member: true, paymentMethod: true },
     });
   }
 

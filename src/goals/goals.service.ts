@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FinancialGoal, GoalStatus } from '../database/entities';
+import { FinancialGoal, GoalPriority, GoalStatus } from '../database/entities';
 import { Field, Float, InputType } from '@nestjs/graphql';
 import { IsDateString, IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
 
@@ -9,9 +9,11 @@ import { IsDateString, IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
 export class CreateGoalInput {
   @Field() @IsNotEmpty() title: string;
   @Field(() => Float) targetAmount: number;
+  @Field(() => Float, { nullable: true }) @IsOptional() currentAmount?: number;
   @Field() @IsDateString() deadline: string;
   @Field() @IsNotEmpty() category: string;
   @Field({ nullable: true }) @IsOptional() description?: string;
+  @Field(() => GoalPriority, { nullable: true }) @IsOptional() @IsEnum(GoalPriority) priority?: GoalPriority;
 }
 
 @InputType()
@@ -21,6 +23,7 @@ export class UpdateGoalInput {
   @Field(() => Float, { nullable: true }) @IsOptional() currentAmount?: number;
   @Field({ nullable: true }) @IsOptional() @IsDateString() deadline?: string;
   @Field(() => GoalStatus, { nullable: true }) @IsOptional() @IsEnum(GoalStatus) status?: GoalStatus;
+  @Field(() => GoalPriority, { nullable: true }) @IsOptional() @IsEnum(GoalPriority) priority?: GoalPriority;
   @Field({ nullable: true }) @IsOptional() category?: string;
   @Field({ nullable: true }) @IsOptional() description?: string;
 }
@@ -39,7 +42,13 @@ export class GoalsService {
   }
 
   create(workspaceId: string, userId: string, input: CreateGoalInput) {
-    return this.goalRepo.save({ ...input, workspaceId, createdById: userId });
+    return this.goalRepo.save({
+      ...input,
+      workspaceId,
+      createdById: userId,
+      currentAmount: input.currentAmount ?? 0,
+      priority: input.priority || GoalPriority.MEDIUM,
+    });
   }
 
   async update(id: string, workspaceId: string, input: UpdateGoalInput) {

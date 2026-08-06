@@ -31,6 +31,11 @@ export class CreateTransactionInput {
   @IsOptional()
   @IsUUID()
   memberId?: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsUUID()
+  paymentMethodId?: string;
 }
 
 @InputType()
@@ -66,6 +71,11 @@ export class UpdateTransactionInput {
   @IsOptional()
   @IsUUID()
   memberId?: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsUUID()
+  paymentMethodId?: string;
 }
 
 @InputType()

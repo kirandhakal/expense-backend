@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { SoftDeleteEntity } from './base.entity';
 import { RefreshToken } from './refresh-token.entity';
 import { WorkspaceMember } from './workspace-member.entity';
@@ -26,6 +26,26 @@ export class User extends SoftDeleteEntity {
   @Field({ nullable: true })
   @Column({ nullable: true })
   avatar?: string;
+
+  @Field()
+  @Column({ default: 'US' })
+  country: string;
+
+  @Field()
+  @Column({ default: 'UTC' })
+  timezone: string;
+
+  @Field()
+  @Column({ default: 'en' })
+  language: string;
+
+  @Field()
+  @Column({ default: false })
+  onboardingCompleted: boolean;
+
+  @Field(() => Int, { nullable: true })
+  @Column({ type: 'int', nullable: true })
+  onboardingStep?: number;
 
   @Field()
   @Column({ default: false })

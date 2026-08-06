@@ -4,10 +4,23 @@ import { SoftDeleteEntity } from './base.entity';
 import { Workspace } from './workspace.entity';
 import { User } from './user.entity';
 import { Category } from './category.entity';
+import { PaymentMethod } from './payment-method.entity';
 
 export enum TransactionType {
   INCOME = 'income',
   EXPENSE = 'expense',
+  TRANSFER = 'transfer',
+  LOAN_GIVEN = 'loan_given',
+  LOAN_RECEIVED = 'loan_received',
+  BORROWED = 'borrowed',
+  RETURNED = 'returned',
+  INVESTMENT = 'investment',
+  SAVINGS = 'savings',
+  REFUND = 'refund',
+  CASH_WITHDRAWAL = 'cash_withdrawal',
+  CASH_DEPOSIT = 'cash_deposit',
+  ADJUSTMENT = 'adjustment',
+  OTHER = 'other',
 }
 
 registerEnumType(TransactionType, { name: 'TransactionType' });
@@ -50,6 +63,13 @@ export class Transaction extends SoftDeleteEntity {
   @Field()
   @Column()
   categoryId: string;
+
+  @ManyToOne(() => PaymentMethod, { nullable: true, onDelete: 'SET NULL' })
+  paymentMethod?: PaymentMethod;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  paymentMethodId?: string;
 
   @ManyToOne(() => User, { onDelete: 'SET NULL', nullable: true })
   member?: User;

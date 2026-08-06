@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Category } from '../database/entities';
+import { Category, CategoryKind } from '../database/entities';
 import { Field, InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
 
 @InputType()
 export class CreateCategoryInput {
@@ -11,6 +11,8 @@ export class CreateCategoryInput {
   @Field() @IsNotEmpty() slug: string;
   @Field({ nullable: true }) @IsOptional() color?: string;
   @Field({ nullable: true }) @IsOptional() icon?: string;
+  @Field({ nullable: true }) @IsOptional() parentId?: string;
+  @Field(() => CategoryKind, { nullable: true }) @IsOptional() @IsEnum(CategoryKind) kind?: CategoryKind;
 }
 
 @InputType()
@@ -18,6 +20,8 @@ export class UpdateCategoryInput {
   @Field({ nullable: true }) @IsOptional() name?: string;
   @Field({ nullable: true }) @IsOptional() color?: string;
   @Field({ nullable: true }) @IsOptional() icon?: string;
+  @Field({ nullable: true }) @IsOptional() isActive?: boolean;
+  @Field({ nullable: true }) @IsOptional() parentId?: string;
 }
 
 @Injectable()
@@ -34,7 +38,13 @@ export class CategoriesService {
   }
 
   create(workspaceId: string, input: CreateCategoryInput) {
-    return this.categoryRepo.save({ ...input, workspaceId, isDefault: false });
+    return this.categoryRepo.save({
+      ...input,
+      workspaceId,
+      isDefault: false,
+      isActive: true,
+      kind: input.kind || CategoryKind.EXPENSE,
+    });
   }
 
   async update(id: string, workspaceId: string, input: UpdateCategoryInput) {
@@ -47,7 +57,10 @@ export class CategoriesService {
   async delete(id: string, workspaceId: string) {
     const cat = await this.categoryRepo.findOne({ where: { id, workspaceId } });
     if (!cat) throw new NotFoundException('Category not found');
-    if (cat.isDefault) throw new NotFoundException('Cannot delete default category');
+    if (cat.isDefault) {
+      await this.categoryRepo.update(id, { isActive: false });
+      return true;
+    }
     await this.categoryRepo.delete(id);
     return true;
   }

@@ -2,7 +2,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   Category,
+  IncomeSource,
   KanbanColumn,
+  PaymentMethod,
   Permission,
   Role,
   RolePermission,
@@ -23,6 +25,8 @@ import { SeedService } from './seed.service';
       WorkspaceMember,
       Category,
       KanbanColumn,
+      PaymentMethod,
+      IncomeSource,
     ]),
   ],
   providers: [SeedService],

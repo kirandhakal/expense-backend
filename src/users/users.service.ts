@@ -32,7 +32,12 @@ export class UsersService {
     return user;
   }
 
-  async updateProfile(userId: string, data: Partial<Pick<User, 'firstName' | 'lastName' | 'avatar'>>) {
+  async updateProfile(
+    userId: string,
+    data: Partial<
+      Pick<User, 'firstName' | 'lastName' | 'avatar' | 'country' | 'timezone' | 'language'>
+    >,
+  ) {
     await this.userRepo.update(userId, data);
     return this.findById(userId);
   }

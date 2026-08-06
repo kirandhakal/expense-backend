@@ -9,7 +9,11 @@ import GraphQLJSON from 'graphql-type-json';
 
 export enum WorkspaceType {
   PERSONAL = 'personal',
+  COUPLE = 'couple',
   FAMILY = 'family',
+  BUSINESS = 'business',
+  SHARED_FLAT = 'shared_flat',
+  /** @deprecated use BUSINESS */
   ORGANIZATION = 'organization',
 }
 
@@ -33,6 +37,14 @@ export class Workspace extends SoftDeleteEntity {
   @Field()
   @Column({ default: 'USD' })
   currency: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  fiscalYearStart?: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  fiscalYearEnd?: string;
 
   @Field(() => GraphQLJSON, { nullable: true })
   @Column({ type: 'jsonb', nullable: true })

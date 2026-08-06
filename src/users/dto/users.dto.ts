@@ -18,6 +18,21 @@ export class UpdateProfileInput {
   @IsOptional()
   @IsString()
   avatar?: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  country?: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  timezone?: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  language?: string;
 }
 
 @InputType()

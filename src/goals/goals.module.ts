@@ -7,5 +7,6 @@ import { GoalsResolver } from './goals.resolver';
 @Module({
   imports: [TypeOrmModule.forFeature([FinancialGoal])],
   providers: [GoalsService, GoalsResolver],
+  exports: [GoalsService],
 })
 export class GoalsModule {}

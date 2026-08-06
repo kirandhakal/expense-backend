@@ -41,6 +41,21 @@ export class UpdateWorkspaceInput {
   @IsString()
   currency?: string;
 
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  fiscalYearStart?: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  fiscalYearEnd?: string;
+
+  @Field(() => WorkspaceType, { nullable: true })
+  @IsOptional()
+  @IsEnum(WorkspaceType)
+  type?: WorkspaceType;
+
   @Field(() => GraphQLJSON, { nullable: true })
   @IsOptional()
   settings?: Record<string, unknown>;
