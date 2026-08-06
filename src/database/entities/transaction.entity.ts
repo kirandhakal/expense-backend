@@ -57,6 +57,7 @@ export class Transaction extends SoftDeleteEntity {
   @Column()
   workspaceId: string;
 
+  @Field(() => Category)
   @ManyToOne(() => Category, { onDelete: 'RESTRICT' })
   category: Category;
 
@@ -64,6 +65,7 @@ export class Transaction extends SoftDeleteEntity {
   @Column()
   categoryId: string;
 
+  @Field(() => PaymentMethod, { nullable: true })
   @ManyToOne(() => PaymentMethod, { nullable: true, onDelete: 'SET NULL' })
   paymentMethod?: PaymentMethod;
 
@@ -71,6 +73,7 @@ export class Transaction extends SoftDeleteEntity {
   @Column({ nullable: true })
   paymentMethodId?: string;
 
+  @Field(() => User, { nullable: true })
   @ManyToOne(() => User, { onDelete: 'SET NULL', nullable: true })
   member?: User;
 
@@ -78,6 +81,7 @@ export class Transaction extends SoftDeleteEntity {
   @Column({ nullable: true })
   memberId?: string;
 
+  @Field(() => User)
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   createdBy: User;
 
