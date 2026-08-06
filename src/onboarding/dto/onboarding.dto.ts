@@ -5,6 +5,7 @@ import {
   IsBoolean,
   IsDateString,
   IsEnum,
+  IsInt,
   IsNumber,
   IsOptional,
   IsString,
@@ -243,7 +244,7 @@ export class OnboardingDashboardInput {
 
 @InputType()
 export class SaveOnboardingStepInput {
-  @Field(() => Int) step: number;
+  @Field(() => Int) @IsInt() step: number;
 
   @Field(() => OnboardingPersonalInput, { nullable: true })
   @IsOptional()
