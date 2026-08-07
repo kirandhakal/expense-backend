@@ -72,7 +72,7 @@ const entities = [
         type: 'postgres' as const,
         host: config.get<string>('DATABASE_HOST', 'localhost'),
         port: config.get<number>('DATABASE_PORT', 5432),
-        username: config.get<string>('DATABASE_USER', 'dev'),
+        username: config.get<string>('DATABASE_USER') || config.get<string>('DATABASE_USERNAME', 'dev'),
         password: config.get<string>('DATABASE_PASSWORD', 'dev'),
         database: config.get<string>('DATABASE_NAME', 'expense_tracker'),
         entities,

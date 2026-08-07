@@ -31,13 +31,19 @@ export class WorkspaceGuard implements CanActivate {
     const user = req.user;
 
     if (!user) return false;
-    if (user.isSuperAdmin) return true;
 
     const workspaceId =
       req.headers['x-workspace-id'] || req.body?.variables?.workspaceId;
 
     if (!workspaceId) {
       throw new ForbiddenException('Workspace ID is required');
+    }
+
+    req.workspaceId = workspaceId;
+
+    if (user.isSuperAdmin) {
+      req.permissions = ['*'];
+      return true;
     }
 
     const membership = await this.memberRepo.findOne({
@@ -51,7 +57,6 @@ export class WorkspaceGuard implements CanActivate {
       throw new ForbiddenException('You are not a member of this workspace');
     }
 
-    req.workspaceId = workspaceId;
     req.membership = membership;
     req.permissions = membership.role.rolePermissions.map(
       (rp) => rp.permission.name,
