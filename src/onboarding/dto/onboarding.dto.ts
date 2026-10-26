@@ -201,7 +201,10 @@ export class OnboardingAlertsInput {
 
 @InputType()
 export class OnboardingReminderInput {
-  @Field(() => [ReminderChannel]) channels: ReminderChannel[];
+  @Field(() => [ReminderChannel])
+  @IsArray()
+  @IsEnum(ReminderChannel, { each: true })
+  channels: ReminderChannel[];
   @Field(() => ReminderTarget) @IsEnum(ReminderTarget) target: ReminderTarget;
   @Field(() => ReminderTiming, { nullable: true }) @IsOptional() @IsEnum(ReminderTiming) timing?: ReminderTiming;
   @Field(() => ReminderAssignee, { nullable: true }) @IsOptional() @IsEnum(ReminderAssignee) assignTo?: ReminderAssignee;

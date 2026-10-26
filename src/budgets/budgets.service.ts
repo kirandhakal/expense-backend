@@ -8,7 +8,10 @@ import { IsDateString, IsEnum, IsOptional } from 'class-validator';
 @InputType()
 export class CreateBudgetInput {
   @Field(() => BudgetType) @IsEnum(BudgetType) type: BudgetType;
-  @Field(() => BudgetStrategy, { nullable: true }) @IsOptional() @IsEnum(BudgetStrategy) strategy?: BudgetStrategy;
+  @Field(() => BudgetStrategy, { nullable: true })
+  @IsOptional()
+  @IsEnum(BudgetStrategy)
+  strategy?: BudgetStrategy;
   @Field(() => Float) amount: number;
   @Field({ nullable: true }) @IsOptional() @IsDateString() periodStart?: string;
   @Field({ nullable: true }) @IsOptional() @IsDateString() periodEnd?: string;
@@ -17,8 +20,14 @@ export class CreateBudgetInput {
 
 @InputType()
 export class UpdateBudgetInput {
-  @Field(() => BudgetType, { nullable: true }) @IsOptional() @IsEnum(BudgetType) type?: BudgetType;
-  @Field(() => BudgetStrategy, { nullable: true }) @IsOptional() @IsEnum(BudgetStrategy) strategy?: BudgetStrategy;
+  @Field(() => BudgetType, { nullable: true })
+  @IsOptional()
+  @IsEnum(BudgetType)
+  type?: BudgetType;
+  @Field(() => BudgetStrategy, { nullable: true })
+  @IsOptional()
+  @IsEnum(BudgetStrategy)
+  strategy?: BudgetStrategy;
   @Field(() => Float, { nullable: true }) @IsOptional() amount?: number;
   @Field({ nullable: true }) @IsOptional() @IsDateString() periodStart?: string;
   @Field({ nullable: true }) @IsOptional() @IsDateString() periodEnd?: string;
@@ -49,7 +58,10 @@ export class BudgetsService {
     const item = await this.repo.findOne({ where: { id, workspaceId } });
     if (!item) throw new NotFoundException('Budget not found');
     await this.repo.update(id, input);
-    return this.repo.findOneOrFail({ where: { id }, relations: { category: true } });
+    return this.repo.findOneOrFail({
+      where: { id },
+      relations: { category: true },
+    });
   }
 
   async delete(id: string, workspaceId: string) {
@@ -67,5 +79,14 @@ export class BudgetsService {
       }
     }
     return this.create(workspaceId, input);
+  }
+
+  async replaceAll(workspaceId: string, inputs: CreateBudgetInput[]) {
+    const existing = await this.findAll(workspaceId);
+    for (const b of existing) await this.repo.softDelete(b.id);
+    const created = [];
+    for (const input of inputs)
+      created.push(await this.create(workspaceId, input));
+    return created;
   }
 }
